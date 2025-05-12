@@ -50,6 +50,7 @@ public class OrderMapper {
                 .productName(detail.getProduct().getName())
                 .quantity(detail.getQuantity())
                 .unitPrice(detail.getProduct().getUnitPrice())
+                .discount(detail.getProduct().getDiscount()) // The discount field was missing
                 .build();
     }
 }

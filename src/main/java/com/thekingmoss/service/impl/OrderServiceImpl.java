@@ -37,8 +37,30 @@ public class OrderServiceImpl implements IOrderService {
     public OrderResponseDto createOrder(OrderRequestDto dto) {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        // Convert DTO to order entity
         Order order = orderMapper.toEntity(dto, user);
-        return orderMapper.toDto(orderRepository.save(order));
+        Order savedOrder = orderRepository.save(order);
+
+        // process detail
+        List<OrderDetail> orderDetails = dto.getDetails().stream()
+                .map(detailDto -> {
+                    Product product = productRepository.findById(detailDto.getProductId())
+                            .orElseThrow(() -> new ResourceNotFoundException("Product not found: " + detailDto.getProductId()));
+                    return orderDetailMapper.toEntity(detailDto, savedOrder, product);
+                })
+                .collect(Collectors.toList());
+
+        orderDetailRepository.saveAll(orderDetails);
+
+        // Convert to Response DTO
+        List<OrderDetailResponseDto> detailDtos = orderDetails.stream()
+                .map(orderDetailMapper::toDto)
+                .collect(Collectors.toList());
+
+        OrderResponseDto responseDto = orderMapper.toDto(savedOrder);
+        responseDto.setDetails(detailDtos);
+
+        return responseDto;
     }
 
     @Override
