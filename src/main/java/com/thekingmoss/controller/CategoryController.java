@@ -15,17 +15,17 @@ public class CategoryController {
     private final ICategoryService service;
 
     @GetMapping
-    public List<CategoryResponseDto> getAll() {
+    public List<CategoryResponseDto> getAllCategories() {
         return service.getAllCategories();
     }
 
     @PostMapping
-    public CategoryResponseDto create(@RequestBody CategoryRequestDto requestDto) {
+    public CategoryResponseDto createCategory(@RequestBody CategoryRequestDto requestDto) {
         return service.createCategory(requestDto);
     }
 
     @GetMapping("/{id}")
-    public CategoryResponseDto getById(@PathVariable Long id) {
+    public CategoryResponseDto getCategoryById(@PathVariable Long id) {
         return service.getCategoryById(id);
     }
 
@@ -35,7 +35,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void deleteCategory(@PathVariable Long id) {
         service.deleteCategory(id);
     }
 }

@@ -2,7 +2,6 @@ package com.thekingmoss.controller;
 
 import com.thekingmoss.dto.product.ProductRequestDto;
 import com.thekingmoss.dto.product.ProductResponseDto;
-import com.thekingmoss.dto.productImage.ProductImageResponseDto;
 import com.thekingmoss.service.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +15,17 @@ public class ProductController {
     private final IProductService service;
 
     @GetMapping
-    public List<ProductResponseDto> getAll() {
+    public List<ProductResponseDto> getAllProducts() {
         return service.getAllProducts();
     }
 
     @PostMapping
-    public ProductResponseDto create(@RequestBody ProductRequestDto requestDto) {
+    public ProductResponseDto createProduct(@RequestBody ProductRequestDto requestDto) {
         return service.createProduct(requestDto);
     }
 
     @GetMapping("/{id}")
-    public ProductResponseDto getById(@PathVariable Long id) {
+    public ProductResponseDto getProductById(@PathVariable Long id) {
         return service.getProductById(id);
     }
 
@@ -41,7 +40,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void deleteProduct(@PathVariable Long id) {
         service.deleteProduct(id);
     }
 }

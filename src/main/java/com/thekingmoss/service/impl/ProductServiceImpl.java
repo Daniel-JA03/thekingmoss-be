@@ -5,6 +5,7 @@ import com.thekingmoss.dto.product.ProductRequestDto;
 import com.thekingmoss.dto.product.ProductResponseDto;
 import com.thekingmoss.entity.Category;
 import com.thekingmoss.entity.Product;
+import com.thekingmoss.exception.ResourceNotFoundException;
 import com.thekingmoss.mapper.category.CategoryMapper;
 import com.thekingmoss.mapper.product.ProductMapper;
 import com.thekingmoss.repository.IProductRepository;
@@ -34,7 +35,7 @@ public class ProductServiceImpl implements IProductService {
     public ProductResponseDto getProductById(Long id) {
         return productRepository.findById(id)
                 .map(productMapper::toDo)
-                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
     }
 
     @Override
@@ -58,7 +59,7 @@ public class ProductServiceImpl implements IProductService {
     public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
         // Search for existing product
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
 
         // Get the category by ID from the DTO
         CategoryResponseDto categoryResponseDto = categoryService.getCategoryById(requestDto.getCategoryId());
@@ -81,7 +82,7 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public void deleteProduct(Long id) {
         if(!productRepository.existsById(id)) {
-            throw new RuntimeException("Product not found with ID : " + id);
+            throw new ResourceNotFoundException("Product not found with ID : " + id);
         }
         productRepository.deleteById(id);
     }

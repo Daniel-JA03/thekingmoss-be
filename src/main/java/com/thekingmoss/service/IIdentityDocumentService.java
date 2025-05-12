@@ -10,7 +10,7 @@ import java.util.List;
 public interface IIdentityDocumentService {
     List<IdentityDocumentResponseDTO> listIdentityDocuments();
     IdentityDocumentResponseDTO getIdentityDocumentById(Long id);
-    IdentityDocumentResponseDTO saveIdentityDocument(IdentityDocumentRequestDTO requestDTO, User user);
+    IdentityDocumentResponseDTO saveIdentityDocument(IdentityDocumentRequestDTO requestDTO);
     IdentityDocumentResponseDTO updateIdentityDocumentById(Long id, IdentityDocumentRequestDTO requestDTO);
     void deleteIdentityDocumentById(Long id);
 }

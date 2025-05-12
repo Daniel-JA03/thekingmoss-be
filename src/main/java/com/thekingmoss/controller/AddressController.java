@@ -29,13 +29,11 @@ public class AddressController {
         return service.getAddressById(id);
     }
   
-    //TODO: DOES NOT WORK BECAUSE USER CLASS IS NOT IMPLEMENTED YET
     @PostMapping
     public AddressResponseDTO saveAddress(@RequestBody AddressRequestDTO requestDTO) {
         return service.saveAddress(requestDTO);
     }
 
-    //TODO: DOES NOT WORK BECAUSE USER CLASS IS NOT IMPLEMENTED YET
     @PutMapping("/{id}")
     public AddressResponseDTO updateAddressById(@PathVariable Long id, @RequestBody AddressRequestDTO requestDTO) {
         return service.updateAddressById(id, requestDTO);

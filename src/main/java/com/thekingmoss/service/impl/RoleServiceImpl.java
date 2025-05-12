@@ -3,6 +3,7 @@ package com.thekingmoss.service.impl;
 import com.thekingmoss.dto.role.RoleRequestDto;
 import com.thekingmoss.dto.role.RoleResponseDto;
 import com.thekingmoss.entity.Role;
+import com.thekingmoss.exception.ResourceNotFoundException;
 import com.thekingmoss.mapper.role.RoleMapper;
 import com.thekingmoss.repository.IRoleRepository;
 import com.thekingmoss.service.IRoleService;
@@ -30,7 +31,7 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public RoleResponseDto getRoleById(Long id) {
         Role role = roleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
         return roleMapper.responseDto(role);
     }
 
@@ -44,7 +45,7 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public RoleResponseDto updateRole(Long id, RoleRequestDto requestDto) {
         Role role = roleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
 
         role.setName(requestDto.getName());
 
@@ -54,7 +55,7 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public void deleteRole(Long id) {
         if (!roleRepository.existsById(id)) {
-            throw new RuntimeException("Role not found");
+            throw new ResourceNotFoundException("Role not found");
         }
         roleRepository.deleteById(id);
     }

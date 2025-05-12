@@ -1,11 +1,10 @@
 package com.thekingmoss.entity;
 
-
 import com.thekingmoss.entity.types.OrderStatusType;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -13,13 +12,13 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	  @Column(name = "order_id")
+    @Column(name = "order_id")
     private Long orderId;
 
     @Column(name = "order_date", nullable = false)
@@ -43,5 +42,6 @@ public class Order {
     private User user;
     
     @OneToMany(mappedBy = "order")
-    private Set<OrderDetail> orderDetails;
+    @Builder.Default
+    private Set<OrderDetail> orderDetails = new LinkedHashSet<>();
 }

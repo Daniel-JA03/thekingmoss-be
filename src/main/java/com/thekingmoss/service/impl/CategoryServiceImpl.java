@@ -3,6 +3,7 @@ package com.thekingmoss.service.impl;
 import com.thekingmoss.dto.category.CategoryRequestDto;
 import com.thekingmoss.dto.category.CategoryResponseDto;
 import com.thekingmoss.entity.Category;
+import com.thekingmoss.exception.ResourceNotFoundException;
 import com.thekingmoss.mapper.category.CategoryMapper;
 import com.thekingmoss.repository.ICategoryRepository;
 import com.thekingmoss.service.ICategoryService;
@@ -28,7 +29,7 @@ public class CategoryServiceImpl implements ICategoryService {
     public CategoryResponseDto getCategoryById(Long id) {
         return categoryRepository.findById(id)
                 .map(categoryMapper::toDo)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public CategoryResponseDto updateCategory(Long id, CategoryRequestDto requestDto) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: " + id));
         category.setName(requestDto.getName());
 
         Category updatedCategory = categoryRepository.save(category);
@@ -50,7 +51,7 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public void deleteCategory(Long id) {
         if(!categoryRepository.existsById(id)) {
-            throw new RuntimeException("Category not found with ID :" + id);
+            throw new ResourceNotFoundException("Category not found with ID :" + id);
         }
         categoryRepository.deleteById(id);
     }

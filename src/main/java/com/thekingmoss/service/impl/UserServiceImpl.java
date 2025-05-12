@@ -4,6 +4,7 @@ import com.thekingmoss.dto.user.UserRequestDto;
 import com.thekingmoss.dto.user.UserResponseDto;
 import com.thekingmoss.entity.Role;
 import com.thekingmoss.entity.User;
+import com.thekingmoss.exception.ResourceNotFoundException;
 import com.thekingmoss.mapper.user.UserMapper;
 import com.thekingmoss.repository.IRoleRepository;
 import com.thekingmoss.repository.IUserRepository;
@@ -25,7 +26,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserResponseDto createUser(UserRequestDto requestDto) {
         Role role = roleRepository.findById(requestDto.getRoleId())
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found"));
 
         User user = userMapper.toUserEntity(requestDto, role);
         user = userRepository.save(user);
@@ -35,7 +36,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserResponseDto getUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return userMapper.responseDto(user);
     }
 
@@ -49,10 +50,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserResponseDto updateUser(Long id, UserRequestDto requestDto) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Role role = roleRepository.findById(requestDto.getRoleId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         user.setUsername(requestDto.getUsername());
         user.setPassword(requestDto.getPassword());
@@ -68,7 +69,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("User not found");
+            throw new ResourceNotFoundException("User not found");
         }
         userRepository.deleteById(id);
     }
