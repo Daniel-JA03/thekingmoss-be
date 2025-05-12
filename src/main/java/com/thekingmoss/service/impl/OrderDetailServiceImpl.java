@@ -52,7 +52,4 @@ public class OrderDetailServiceImpl implements IOrderDetailService {
         existing.setQuantity(dto.getQuantity());
         return orderDetailMapper.toDto(orderDetailRepository.save(existing));
     }
-
-
-
 }
